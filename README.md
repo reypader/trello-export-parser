@@ -1,5 +1,6 @@
 # Trello Project List Exporter
 
+(Largely generated with Windsurf)
 A Python utility to process Trello CSV exports, filter cards based on specific criteria, and export them to markdown format.
 
 ## Features

@@ -7,9 +7,31 @@ This script takes filtered Trello card data and formats it into a markdown docum
 
 import os
 import sys
+import re
 from datetime import datetime
 from typing import List, Dict, Any, Optional
 from collections import defaultdict
+
+
+def replace_emoji_strings(text: str) -> str:
+    """
+    Replace specific emoji strings with their text equivalents
+    
+    Args:
+        text: The text to process
+        
+    Returns:
+        Text with emoji strings replaced
+    """
+    replacements = {
+        ":question:": "(needs clarification)",
+        ":warning:": "(important note)"
+    }
+    
+    for emoji, replacement in replacements.items():
+        text = text.replace(emoji, replacement)
+    
+    return text
 
 
 def format_card_as_markdown(card: Dict[str, Any]) -> str:
@@ -23,11 +45,13 @@ def format_card_as_markdown(card: Dict[str, Any]) -> str:
         String with markdown formatted card
     """
     # Start with the card name as a header (now 3rd level since team is 2nd level)
-    markdown = f"### {card['name']}\n\n"
+    card_name = replace_emoji_strings(card['name'])
+    markdown = f"### {card_name}\n\n"
     
-    # Add the card description
+    # Add the card description with emoji strings replaced
     if card['description']:
-        markdown += f"{card['description']}\n\n"
+        description = replace_emoji_strings(card['description'])
+        markdown += f"{description}\n\n"
     else:
         markdown += "*No description provided*\n\n"
     

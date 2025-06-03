@@ -131,7 +131,7 @@ def format_cards_to_markdown(cards: List[Dict[str, Any]],
     # Add metadata if requested
     if include_metadata:
         current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        markdown += f"*Generated on: {current_time}*\n\n"
+        markdown += f"*As of: {current_time}*\n\n"
         # Add empty line instead of horizontal rule
         markdown += "\n"
     

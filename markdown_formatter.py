@@ -83,7 +83,7 @@ def group_cards_by_team(cards: List[Dict[str, Any]]) -> Dict[str, List[Dict[str,
 
 def get_ordered_teams(teams: Dict[str, List[Dict[str, Any]]]) -> List[str]:
     """
-    Get team names in the desired order: TMM first, SRE second, then the rest alphabetically
+    Get team names in the desired order: Group-wide first, SRE second, then the rest alphabetically
     
     Args:
         teams: Dictionary with team names as keys and lists of cards as values
@@ -93,16 +93,16 @@ def get_ordered_teams(teams: Dict[str, List[Dict[str, Any]]]) -> List[str]:
     """
     ordered_teams = []
     
-    # Add TMM first if it exists
-    if "TMM" in teams:
-        ordered_teams.append("TMM")
+    # Add Group-wide first if it exists
+    if "Group-wide" in teams:
+        ordered_teams.append("Group-wide")
     
     # Add SRE second if it exists
     if "SRE" in teams:
         ordered_teams.append("SRE")
     
     # Add the rest of the teams alphabetically
-    remaining_teams = sorted([team for team in teams.keys() if team not in ["TMM", "SRE"]])
+    remaining_teams = sorted([team for team in teams.keys() if team not in ["Group-wide", "SRE"]])
     ordered_teams.extend(remaining_teams)
     
     return ordered_teams

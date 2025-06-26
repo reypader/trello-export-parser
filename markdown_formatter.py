@@ -55,6 +55,18 @@ def format_card_as_markdown(card: Dict[str, Any]) -> str:
     else:
         markdown += "*No description provided*\n\n"
     
+    # Add attachment links section if available (now called "References")
+    if card.get('attachment_links'):
+        # Split the comma-separated URLs and filter out empty ones
+        attachment_urls = [stripped for url in card['attachment_links'].split(',') 
+                          if (stripped := url.strip())]
+        
+        if attachment_urls:
+            markdown += "**References**\n\n"
+            for url in attachment_urls:
+                markdown += f"* {url}\n"
+            markdown += "\n"
+    
     # Add an empty line instead of horizontal rule
     markdown += "\n"
     

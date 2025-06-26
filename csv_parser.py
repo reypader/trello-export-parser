@@ -140,7 +140,8 @@ class TrelloCSVParser:
                 'team': team,
                 'due_date': card.get('Due Date', None),
                 'list_name': card.get('List Name', ''),
-                'board_name': card.get('Board Name', '')
+                'board_name': card.get('Board Name', ''),
+                'attachment_links': card.get('Attachment Links', '')
             }
             extracted_info.append(card_info)
             

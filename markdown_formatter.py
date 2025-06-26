@@ -109,8 +109,8 @@ def get_ordered_teams(teams: Dict[str, List[Dict[str, Any]]]) -> List[str]:
 
 
 def format_cards_to_markdown(cards: List[Dict[str, Any]], 
-                           title: str = "Transaction Management and Middleware",
-                           include_metadata: bool = True) -> str:
+                           include_metadata: bool = True,
+                           timestamp: Optional[datetime] = None) -> str:
     """
     Format multiple cards into a complete markdown document, grouped by team
     
@@ -118,6 +118,7 @@ def format_cards_to_markdown(cards: List[Dict[str, Any]],
         cards: List of card dictionaries
         title: Title for the markdown document (default now set to "Transaction Management and Middleware")
         include_metadata: Whether to include metadata about the export
+        timestamp: Timestamp to use for the "As of" field (defaults to current time if None)
         
     Returns:
         Complete markdown document as a string
@@ -130,7 +131,10 @@ def format_cards_to_markdown(cards: List[Dict[str, Any]],
     
     # Add metadata if requested
     if include_metadata:
-        current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        # Use provided timestamp or current time as fallback
+        if timestamp is None:
+            timestamp = datetime.now()
+        current_time = timestamp.strftime('%Y-%m-%d %H:%M:%S')
         markdown += f"*As of: {current_time}*\n\n"
         # Add empty line instead of horizontal rule
         markdown += "\n"

@@ -73,6 +73,13 @@ def main():
         args.output = f"trello_export_{timestamp}.md"
     
     try:
+        # Get the CSV file's last modified time
+        if os.path.exists(args.csv_file):
+            file_mtime = datetime.fromtimestamp(os.path.getmtime(args.csv_file))
+        else:
+            file_mtime = None
+            print(f"Warning: Could not get last modified time for {args.csv_file}")
+
         # Parse and filter the CSV
         parser = TrelloCSVParser(args.csv_file)
         filtered_cards = parser.filter_cards(
@@ -90,8 +97,8 @@ def main():
         
         print(f"Found {len(card_info)} cards matching the criteria.")
         
-        # Format to markdown
-        markdown = format_cards_to_markdown(card_info)
+        # Format to markdown, using the CSV file's last modified time
+        markdown = format_cards_to_markdown(card_info, timestamp=file_mtime)
         
         # Save to file
         save_markdown_to_file(markdown, args.output)

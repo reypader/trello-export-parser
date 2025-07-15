@@ -57,9 +57,23 @@ def format_card_as_markdown(card: Dict[str, Any]) -> str:
     
     # Add attachment links section if available (now called "References")
     if card.get('attachment_links'):
-        # Split the comma-separated URLs and filter out empty ones
-        attachment_urls = [stripped for url in card['attachment_links'].split(',') 
-                          if (stripped := url.strip())]
+        # Split URLs by looking for 'http' prefixes instead of comma-splitting
+        attachment_text = card['attachment_links']
+        attachment_urls = []
+        
+        # Find all occurrences of URLs starting with http
+        url_starts = [i for i, c in enumerate(attachment_text) if 
+                     attachment_text[i:i+4] == 'http']
+        
+        # Extract each URL based on start positions
+        for i in range(len(url_starts)):
+            start = url_starts[i]
+            # If this is the last URL, go to the end of the string
+            end = url_starts[i+1] if i < len(url_starts) - 1 else len(attachment_text)
+            url = attachment_text[start:end].strip()
+            # Remove any trailing comma or whitespace
+            url = url.rstrip(',').strip()
+            attachment_urls.append(url)
         
         if attachment_urls:
             markdown += "**References**\n\n"
